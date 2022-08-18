@@ -40,10 +40,17 @@ func (db *DB) InsertRule(r *model.Rule) {
 }
 
 func (db *DB) FilterRulesByUserType(userType usertype.UserType) []*model.Rule {
-	cur, err := db.coll.Find(context.TODO(), bson.M{"conditions": bson.M{"$in": bson.M{"user_type": userType}}})
+	cur, err := db.coll.Find(context.TODO(), bson.M{
+		"conditions": bson.M{
+			"$in": bson.M{
+				"user_type": userType,
+			},
+		},
+	})
 	if err != nil {
 		log.Panicln(err)
 	}
+
 	var rules []*model.Rule
 	for cur.Next(context.TODO()) {
 		var rule model.Rule
