@@ -28,7 +28,7 @@ func (a *API) Init(db *db.DB) {
 	a.db = db
 }
 
-func (a *API) Apply(price *big.Int, userType usertype.UserType) []*model.ApplyRule {
+func (a *API) Apply(price *big.Float, userType usertype.UserType) []*model.ApplyRule {
 	var appliedRules []*model.ApplyRule
 	rules := a.db.FilterRulesByUserType(userType)
 	for i, r := range rules {
@@ -40,7 +40,7 @@ func (a *API) Apply(price *big.Int, userType usertype.UserType) []*model.ApplyRu
 			Sequence:     i,
 			OldPrice:     price,
 			NewPrice:     newPrice,
-			Displacement: new(big.Int).Abs(new(big.Int).Sub(price, newPrice)),
+			Displacement: new(big.Float).Abs(new(big.Float).Sub(price, newPrice)),
 		})
 	}
 	return appliedRules

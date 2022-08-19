@@ -7,5 +7,5 @@ import (
 
 type Apply struct {
 	UserType usertype.UserType `json:"user_type" bson:"user_type"`
-	Price    *big.Int          `json:"price" bson:"price"`
+	Price    *big.Float        `json:"price" bson:"price"`
 }

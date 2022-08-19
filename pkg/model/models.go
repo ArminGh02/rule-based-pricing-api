@@ -15,22 +15,22 @@ type Rule struct {
 	Conditions []Condition       `json:"conditions" bson:"conditions"`
 }
 
-func (r *Rule) Apply(price *big.Int) *big.Int {
-	res := new(big.Int).Set(price)
+func (r *Rule) Apply(price *big.Float) *big.Float {
+	res := new(big.Float).Set(price)
 	switch r.Type {
 	case ruletype.Discount:
 		res.Set(
-			new(big.Int).Sub(
+			new(big.Float).Sub(
 				price,
 				util.Min(
-					new(big.Int).Add(
+					new(big.Float).Add(
 						price,
-						new(big.Int).Div(
-							new(big.Int).Mul(
+						new(big.Float).Quo(
+							new(big.Float).Mul(
 								price,
 								r.Action.PercentageDisplacementAmount,
 							),
-							big.NewInt(100),
+							big.NewFloat(100),
 						),
 					),
 					r.Action.MaximumDisplacementAmount,
@@ -39,17 +39,17 @@ func (r *Rule) Apply(price *big.Int) *big.Int {
 		)
 	case ruletype.Markup:
 		res.Set(
-			new(big.Int).Add(
+			new(big.Float).Add(
 				price,
 				util.Min(
-					new(big.Int).Add(
+					new(big.Float).Add(
 						price,
-						new(big.Int).Div(
-							new(big.Int).Mul(
+						new(big.Float).Quo(
+							new(big.Float).Mul(
 								price,
 								r.Action.PercentageDisplacementAmount,
 							),
-							big.NewInt(100),
+							big.NewFloat(100),
 						),
 					),
 					r.Action.MaximumDisplacementAmount,
@@ -61,10 +61,10 @@ func (r *Rule) Apply(price *big.Int) *big.Int {
 }
 
 type Action struct {
-	ID                           int64    `json:"id" bson:"id"`
-	FixedDisplacementAmount      *big.Int `json:"fixed_displacement_amount" bson:"fixed_displacement_amount"`
-	PercentageDisplacementAmount *big.Int `json:"percentage_displacement_amount" bson:"percentage_displacement_amount"`
-	MaximumDisplacementAmount    *big.Int `json:"maximum_displacement_amount" bson:"maximum_displacement_amount"`
+	ID                           int64      `json:"id" bson:"id"`
+	FixedDisplacementAmount      *big.Float `json:"fixed_displacement_amount" bson:"fixed_displacement_amount"`
+	PercentageDisplacementAmount *big.Float `json:"percentage_displacement_amount" bson:"percentage_displacement_amount"`
+	MaximumDisplacementAmount    *big.Float `json:"maximum_displacement_amount" bson:"maximum_displacement_amount"`
 }
 
 type Condition struct {
@@ -72,10 +72,10 @@ type Condition struct {
 }
 
 type ApplyRule struct {
-	ID           int64    `json:"id" bson:"id"`
-	Name         string   `json:"name" bson:"name"`
-	Sequence     int      `json:"sequence" bson:"sequence"`
-	OldPrice     *big.Int `json:"old_price" bson:"old_price"`
-	NewPrice     *big.Int `json:"new_price" bson:"new_price"`
-	Displacement *big.Int `json:"displacement" bson:"displacement"`
+	ID           int64      `json:"id" bson:"id"`
+	Name         string     `json:"name" bson:"name"`
+	Sequence     int        `json:"sequence" bson:"sequence"`
+	OldPrice     *big.Float `json:"old_price" bson:"old_price"`
+	NewPrice     *big.Float `json:"new_price" bson:"new_price"`
+	Displacement *big.Float `json:"displacement" bson:"displacement"`
 }
